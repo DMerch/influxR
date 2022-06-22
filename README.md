@@ -1,2 +1,2 @@
-# influxR
-R wrapper for the V2.X InfluxDB API 
+# influxr
+R wrapper for the InfluxDB V2 API 
