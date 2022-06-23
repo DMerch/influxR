@@ -26,9 +26,9 @@ connect <- function (url = getOption("influxr.url", NULL),
                      org = getOption("influxr.org", NULL),
                      token = getOption("influxr.token", NULL)) {
 
-  stopifnot(is.character(url))
-  stopifnot(is.character(org))
-  stopifnot(is.character(token))
+  check_char(url)
+  check_char(org)
+  check_char(token)
 
   base_request <-
     httr2::request(url) %>%
@@ -77,7 +77,8 @@ connect <- function (url = getOption("influxr.url", NULL),
 #' \dontrun{
 #' con <- connect(url = "https://myserver.mycompany.com:8086",
 #'                org = "my-org",
-#'                token = "my-token")#  print(con)
+#'                token = "my-token")
+#' print(con)
 #' }
 print.influxdb <- function (x, ...) {
   cat("<influxdb ", x$url, " org=", x$org, ">\n", sep = "")
