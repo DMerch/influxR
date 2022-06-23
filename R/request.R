@@ -113,9 +113,9 @@ respond_with_json <-
 #' Build a http request asking for a json response
 #'
 #' @param con An influxdb connection previous established using connect()
+#' @param data A list of variable/value parameters converted to json variables
 #' @param path Optional string path to append to the base url
 #' @param query Optional list of query name/value pairs to append to the url
-#' @param query Query parameters to append to the url
 #' @param method Set a custom HTTP method like HEAD, DELETE, PATCH, UPDATE, or
 #'   OPTIONS. The default method is GET for requests without a body, and POST
 #'   for requests with a body.
