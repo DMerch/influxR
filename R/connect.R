@@ -30,37 +30,41 @@ connect <- function (url = getOption("influxr.url", NULL),
   check_char(org)
   check_char(token)
 
-  base_request <-
-    httr2::request(url) %>%
-    httr2::req_headers(Authorization = paste("Token", token))
+  con <- new_connection(url = url, org = org, token = token)
 
   # Try a simple ping to validate the url
   ping_resp <-
-    base_request %>%
+    con$base_request %>%
     httr2::req_url_path_append("ping") %>%
     httr2::req_perform()
 
   # Make sure the org and the authorization token are valid
   org_resp <-
-    base_request %>%
+    con$base_request %>%
     httr2::req_url_path_append("api/v2/orgs") %>%
     httr2::req_url_query(org = org) %>%
     httr2::req_perform() %>%
     httr2::resp_body_json()
 
-  orgID = org_resp$orgs[[1]]$id
+  # Set the orgID
+  con$orgID <- org_resp$orgs[[1]]$id
 
-  structure(
-    list(
-      base_request = base_request,
-      url = url,
-      org = org,
-      orgID = orgID
-    ),
-    class = influxdb_class()
-  )
+  return(con)
 }
 
+new_connection <- function (url, org, orgID, token) {
+  base_request <-
+    httr2::request(url) %>%
+    httr2::req_headers(Authorization = paste("Token", token))
+
+  structure(list(
+    base_request = base_request,
+    url = url,
+    org = org,
+    orgID = NULL
+  ),
+  class = influxdb_class())
+}
 
 #' Formatter for printing the influxdb class
 #'
