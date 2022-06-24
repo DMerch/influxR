@@ -1,9 +1,5 @@
-#' Return the path to the "authorizations" api
-#'
-#' @return String path to authorizations api
-#'
-auth_api <- function() {
-  api_path("authorizations")
+auth_api <- function(...) {
+  api_path("authorizations", ...)
 }
 
 #' List authorizations available on an influxdb server
@@ -51,9 +47,7 @@ list_authorizations <-
       userID = userID
     )
 
-    resp <- respond_with_json(con, path = auth_api(), query = query)
-
-    return(resp$authorizations)
+    respond_with_json(con, path = auth_api(), query = query)
   }
 
 #' Create an influx authorization
@@ -104,9 +98,7 @@ create_authorization <-
 delete_authorization <- function (con, authID) {
   check_influxdb_con(con)
   check_char(authID)
-  respond(con,
-          path = paste0(auth_api(), "/", authID),
-          method = "DELETE")
+  respond(con, path = auth_api(authID), method = "DELETE")
 }
 
 
@@ -121,7 +113,7 @@ delete_authorization <- function (con, authID) {
 retrieve_authorization <- function (con, authID) {
   check_influxdb_con(con)
   check_char(authID)
-  respond_with_json(con, path = paste0(auth_api(), "/", authID))
+  respond_with_json(con, path = auth_api(authID))
 }
 
 
@@ -152,7 +144,7 @@ update_authorization <-
     respond_to_json_with_json(
       con = con,
       data = body,
-      path = paste0(auth_api(), "/", authID),
+      path = auth_api(authID),
       method = "PATCH"
     )
   }

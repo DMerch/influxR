@@ -1,11 +1,12 @@
-#' Append the path to the Influx V2 API endpoint
+#' Build an Influxdb 2.X API endpoint path
 #'
 #' @param path Path to append to the API endpoint
+#' @param ... Additional elements to append to the path separated by /
 #'
-#' @return Path provided preceded by "api/v2/"
+#' @return All inputs concatenated into a single / separated string
 #'
-api_path <- function (path) {
-  paste0("api/v2/", path)
+api_path <- function (path, ...) {
+  paste0(c("api/v2", path, ...), collapse = "/")
 }
 
 
