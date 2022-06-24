@@ -43,11 +43,37 @@ connect <- function (url = getOption("influxr.url", NULL),
     con$base_request %>%
     httr2::req_url_path_append("api/v2/orgs") %>%
     httr2::req_url_query(org = org) %>%
-    httr2::req_perform() %>%
-    httr2::resp_body_json()
+    httr2::req_error(
+      is_error = function(resp)
+        FALSE
+    ) %>%
+    httr2::req_perform()
 
-  # Set the orgID
-  con$orgID <- org_resp$orgs[[1]]$id
+  if (httr2::resp_status(org_resp) == 200) {
+    json <- httr2::resp_body_json(org_resp)
+    con$orgID <- json$orgs[[1]]$id
+    return(con)
+  }
+
+  if (httr2::resp_status(org_resp) == 404) {
+    stop(paste0("Invalid organization provided to connect()- '", org, "'\n"),
+         call. = FALSE)
+  }
+
+  if (httr2::resp_status(org_resp) == 401) {
+    stop("Unauthorized token provided to connect()", call. = FALSE)
+  }
+
+  stop(
+    paste0(
+      "Unknown error during connect() - HTTP ",
+      httr2::resp_status(org_resp),
+      " ",
+      httr2::resp_status_desc(org_resp),
+      "\n"
+    ),
+    call. = FALSE
+  )
 
   return(con)
 }

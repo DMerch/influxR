@@ -42,6 +42,19 @@ test_that("check_char_or_NULL() works", {
 
 })
 
+test_that("check_integer_or_NULL() works", {
+
+  test_function <- function (arg) {
+    check_integer_or_NULL(arg)
+  }
+
+  expect_silent(test_function(NULL))
+  expect_error(test_function("char"), "test_function")
+  expect_error(test_function(1.0), "test_function")
+  expect_silent(test_function(1L))
+
+})
+
 test_that("check_mutually_exclusive() works", {
 
   test_function <- function (arg1, arg2) {

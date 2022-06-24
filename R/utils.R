@@ -66,6 +66,25 @@ check_char_or_NULL <- function (arg) {
   }
 }
 
+check_integer_or_NULL <- function (arg) {
+  arg_symbol <- rlang::enexpr(arg)
+  if (isFALSE(is.null(arg) || is.integer(arg))) {
+    call <- sys.call(-1)
+    if (is.null(call)) {
+      call <- sys.call()
+    }
+    stop(paste0(
+      "Argument '",
+      arg_symbol,
+      "' of function ",
+      as.list(call)[[1]],
+      "() must be of type 'integer' instead of type '",
+      class(arg),
+      "'\n"
+    ), call. = FALSE)
+  }
+}
+
 check_mutually_exclusive <- function (arg1, arg2) {
   arg1_symbol <- rlang::enexpr(arg1)
   arg2_symbol <- rlang::enexpr(arg2)
