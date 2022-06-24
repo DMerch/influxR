@@ -66,13 +66,16 @@ list_authorizations <-
 create_authorization <-
   function (con,
             description = NULL,
-            orgID = con$orgID,
+            orgID = NULL,
             permissions = all_read_permissions(),
             status = c("active", "inactive"),
             userID = NULL) {
     check_influxdb_con(con)
     check_char_or_NULL(description)
-    check_char(orgID)
+    check_char_or_NULL(orgID)
+    if (is.null(orgID)) {
+      orgID = con$orgID
+    }
     status <- match.arg(status)
     check_char_or_NULL(userID)
 
