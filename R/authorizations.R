@@ -95,7 +95,7 @@ create_authorization <-
 #' @param con influxdb connection previously established with \code{connect}
 #' @param authID influx authorizationID of the authorization to update
 #'
-#' @return TRUE if existed and deleted; FALSE otherwise
+#' @return influxdb V2 API response
 #' @export
 #'
 delete_authorization <- function (con, authID) {
