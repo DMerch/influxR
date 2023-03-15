@@ -11,17 +11,15 @@ Description: The influxr package provides an R interface to an Influx database t
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Imports:
   magrittr,
   dplyr,
-  httr,
   httr2 (>= 0.2.1),
   purrr,
   stringr,
   stringi,
   readr,
-  glue,
   lubridate,
   rlang,
   methods,
